@@ -6,7 +6,9 @@ class Server {
     constructor() {
         this.app = express()
         this.port=process.env.PORT
+        //Creamos los path para el crud de usuarios y para la autenticacion
         this.usuariosPath='/api/usuarios';
+        this.authPath='/api/auth';
 
 
         //Conexcion a bd
@@ -49,6 +51,8 @@ class Server {
     }
     routes()
     {
+          //Creamos las rutas  para el crud de usuarios y para la autenticacion haciendo sus respectivos requires
+          this.app.use(this.authPath,require('../routes/auth'))   
           this.app.use(this.usuariosPath,require('../routes/usuarios'))
 
     }

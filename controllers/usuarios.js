@@ -123,16 +123,22 @@ const usuariosGet = async(req, res=response) => {
   const usuariosDelete = async (req, res=response) => {
     //res.send('Hello World')
     const {id}=req.params;
+    
+    //el parametro req (request) se maneja por referencia y puede ser leido y cambiado desde cualquier lado
+    const uid=req.uid;
 
     //Para borrarlo fisicamente
     //const usuario=await Usuario.findByIdAndDelete(id)
 
     //Para actualizar el estado:
-    const usuario=await Usuario.findByIdAndUpdate(id,{estado:false})
+    const usuarioEliminado=await Usuario.findByIdAndUpdate(id,{estado:false})
+    //const usuarioAutenticado=req.userauth;
 
     res.status(200).json({
         msg : 'Usuario eliminado',
-        usuario
+        usuarioEliminado,
+        uid,
+        //usuarioAutenticado
     })
 
   }

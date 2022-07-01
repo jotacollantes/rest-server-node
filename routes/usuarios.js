@@ -1,7 +1,14 @@
 const {Router} = require('express');
 const { check } = require('express-validator');
 const { usuariosGet,usuariosPost,usuariosPut,usuariosDelete,usuariosPatch } = require('../controllers/usuarios');
-const { validarCampos } = require('../middlewares/validar-campos');
+
+// const { validarCampos } = require('../middlewares/validar-campos');
+// const { validarToken } = require('../middlewares/validar-jwt');
+// const {esAdminRole,tieneRol}=require('../middlewares/validar-roles')
+
+//Por default require toma el index.js que esta dentro del directorio.
+const {validarCampos,validarToken,esAdminRole,tieneRol}=require('../middlewares/');
+
 const { esRolValido, correoNoExiste,idMongoNoExiste } = require('../helpers/db-validators');
 const router=Router();
 
@@ -34,6 +41,11 @@ const router=Router();
   ] ,usuariosPost)
 
   router.delete('/:id', [
+    validarToken,
+    //El middleware esAdminRole es mas restrictiva si o si el usuario tiene que tener rol de ADMIN
+    //esAdminRole ,
+    //El middleware tieneRol es mas flexible
+    tieneRol('ADMIN_ROL','VENTAS_ROL'),
     check('id','No es un ID valido de mongo').isMongoId(),
     check('id').custom(idMongoNoExiste),
     validarCampos

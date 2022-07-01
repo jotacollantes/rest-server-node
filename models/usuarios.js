@@ -41,7 +41,9 @@ const UsuarioSchema= Schema({
 UsuarioSchema.methods.toJSON= function () {
     //Operador REST ...soloDatosUsuario quiere decir que va almacenar todos los campos en soloDatosUsuario menos __v y password
     //this.object hace referencia a la instancia creada de UsuarioSchema
-    const { __v,password, ...soloDatosUsuario} =this.toObject();
+    const { __v,password, _id,...soloDatosUsuario} =this.toObject();
+    //Añado el_id de mongo en el nuevo campo uid en soloDatosUsuario.uid
+    soloDatosUsuario.uid=_id;
     return soloDatosUsuario;
 }
 //Mongose, al momento de crear la coleccion lo va a poner en plura y en minuscula o sea usuarios  en mongoDB

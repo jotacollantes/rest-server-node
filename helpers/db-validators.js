@@ -40,10 +40,28 @@ const esRolValido=async (rol='')=> {
 }
 
 
+const correoExiste= async(correo='') => {
+  const existeEmail=await Usuario.findOne({correo : correo})
+  //console.log(existeEmail)
+  if (!existeEmail)
+  {
+  // res.status(400).json({
+  //     msg: `Correo ${correo} ya esta registrado`
+  // })
+  //return;
+      //El express-validator par alanzar un error personalizado usa THROW NEW Error
+      throw new Error(`El correo ${correo} no existe en la bd`)
+  }
+}
+
+
+
+
 
 
   module.exports={
     esRolValido,
     correoNoExiste,
-    idMongoNoExiste
+    idMongoNoExiste,
+    correoExiste
   }
