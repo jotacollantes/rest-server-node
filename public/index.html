@@ -8,9 +8,11 @@
 </head>
 <body>
     
-        <!-- se tiene que poner el client que tiene permitido el acceso desde heroku -->
-      <div id="g_id_onload"
+        <!-- se tiene que poner el client que tiene permitido el acceso desde heroku 
          data-client_id="455216328976-fd6la0qrnh6cp32kesu4lm7u66cr0bir.apps.googleusercontent.com"
+      -->
+      <div id="g_id_onload"
+         data-client_id="455216328976-c84mp3fl9d6pf7vo5mre560gkodnjf5v.apps.googleusercontent.com"
          data-auto_prompt="false"
          data-callback="handleCredentialResponse">
       </div>
@@ -45,8 +47,8 @@
          const body={id_token: response.credential};
          //Develve una promesa y se usa .then para recibir el resolve y catch para recibir el reject
          //fetch por defecto hace una peticion get
-         //fetch('http://localhost:8080/api/auth/google',
-         fetch('https://jota-rest-server-nodejs.herokuapp.com/api/auth/google',
+         fetch('http://localhost:8080/api/auth/google',
+         //fetch('https://jota-rest-server-nodejs.herokuapp.com/api/auth/google',
          {
             method: 'POST',
             headers: {
