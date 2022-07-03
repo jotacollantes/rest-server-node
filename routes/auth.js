@@ -1,5 +1,5 @@
 const {Router} = require('express');
-const { login } = require('../controllers/auth');
+const { login,googleSignIn } = require('../controllers/auth');
 const { check } = require('express-validator');
 const { esRolValido, correoExiste,idMongoNoExiste } = require('../helpers/db-validators');
 const { validarCampos } = require('../middlewares/validar-campos');
@@ -12,4 +12,10 @@ check('password','La contraseña es obligatoria').not().isEmpty(),
 //check('correo').custom(correoExiste),
 validarCampos
 ],login)
+
+//para la ruta /login y metodo post llamo al controlador login que esta en /controllers/auth
+router.post('/google',[
+    check('id_token','Google Id Token es obligatorio').not().isEmpty(),
+    validarCampos
+    ],googleSignIn)
 module.exports=router;

@@ -4,9 +4,76 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Denegado</title>
+    <title>Google Sign-in</title>
 </head>
 <body>
-    <h1>Acceso denegado</h1>
+    
+    
+      <div id="g_id_onload"
+         data-client_id="455216328976-c84mp3fl9d6pf7vo5mre560gkodnjf5v.apps.googleusercontent.com"
+         data-auto_prompt="false"
+         data-callback="handleCredentialResponse">
+      </div>
+      <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+      </div>
+      <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+      <button id="logout">Logout</button>
+      <script>
+        function handleCredentialResponse(response)
+        {
+           // decodeJwtResponse() is a custom function defined by you
+           // to decode the credential response.
+
+        //    const responsePayload = decodeJwtResponse(response.credential);
+        //    console.log("ID: " + responsePayload.sub);
+        //    console.log('Full Name: ' + responsePayload.name);
+        //    console.log('Given Name: ' + responsePayload.given_name);
+        //    console.log('Family Name: ' + responsePayload.family_name);
+        //    console.log("Image URL: " + responsePayload.picture);
+        //    console.log("Email: " + responsePayload.email);
+
+        //console.log('DI token: ',response.credential);
+         
+        // Creammos el objeto body
+         const body={id_token: response.credential};
+         //Develve una promesa y se usa .then para recibir el resolve y catch para recibir el reject
+         //fetch por defecto hace una peticion get
+         fetch('http://localhost:8080/api/auth/google',
+         {
+            method: 'POST',
+            headers: {
+               'Content-Type':'application/json'
+            },
+            //stringify convierte un objeto JS a json
+            body: JSON.stringify(body)
+         })
+         .then((resp) => resp.json())
+         .then((resp) => {
+         console.log(resp) 
+         //Grabamos la informacion del correo en el localstorage porque va a ser necesario para el logout o cerrar la session.
+         localStorage.setItem('email',resp.usuario.correo)
+        })
+         .catch(console.warn);
+         }
+
+         //Hacemos referencia al botton
+         const button=document.getElementById('logout');
+         button.onclick= () => {
+            //console.log(google.accounts.id);
+            google.accounts.id.disableAutoSelect()
+            google.accounts.id.revoke(localStorage.getItem('email'), (done) => {
+               localStorage.clear();
+               location.reload();
+            })
+
+         }
+      </script>
 </body>
 </html>
