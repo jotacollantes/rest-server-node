@@ -102,7 +102,7 @@ const usuariosGet = async(req, res=response) => {
       resto.password=bcryptjs.hashSync(password,salt)
       console.log(resto); 
     }
-
+    //resto es un objeto
     const usuario =await Usuario.findByIdAndUpdate(id,resto)
 
     res.status(200).json({

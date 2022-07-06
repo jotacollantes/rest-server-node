@@ -7,9 +7,18 @@ class Server {
         this.app = express()
         this.port=process.env.PORT
         //Creamos los path para el crud de usuarios y para la autenticacion
-        this.usuariosPath='/api/usuarios';
-        this.authPath='/api/auth';
 
+
+        // this.usuariosPath='/api/usuarios';
+        // this.authPath='/api/auth';
+        //Mejor defino un objeto de JS para los paths
+        this.appPaths={
+            auth: '/api/auth',
+            buscar: '/api/buscar',
+            usuarios:'/api/usuarios',
+            categorias:'/api/categorias',
+            productos:'/api/productos',
+        }
 
         //Conexcion a bd
         this.conectarDb();
@@ -52,9 +61,11 @@ class Server {
     routes()
     {
           //Creamos las rutas  para el crud de usuarios y para la autenticacion haciendo sus respectivos requires
-          this.app.use(this.authPath,require('../routes/auth'))   
-          this.app.use(this.usuariosPath,require('../routes/usuarios'))
-
+          this.app.use(this.appPaths.auth,require('../routes/auth')) 
+          this.app.use(this.appPaths.buscar,require('../routes/buscar'))   
+          this.app.use(this.appPaths.usuarios,require('../routes/usuarios'))
+          this.app.use(this.appPaths.categorias,require('../routes/categorias'))
+          this.app.use(this.appPaths.productos,require('../routes/productos'))
     }
 
     listen()
