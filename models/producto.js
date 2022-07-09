@@ -32,6 +32,7 @@ const ProductoSchema= Schema({
 
     descripcion: {type: String},
     disponible: {type: Boolean, default: true},
+    img:{type: String}
 });
 
 //Voy a sobre escribir el .JSON de respuesta que se envia al usuario

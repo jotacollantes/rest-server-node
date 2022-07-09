@@ -4,6 +4,7 @@ const Categoria = require('../models/categoria');
 const {Producto}= require('../models');
 const ObjectId = require('mongoose').Types.ObjectId;
 
+
 const esCategoriaValida=async (categoria='')=> {
   const existeCategoria = await Categoria.findById(categoria);
   if(!existeCategoria)
@@ -12,6 +13,19 @@ const esCategoriaValida=async (categoria='')=> {
     throw new Error(`La categoria con el id ${categoria} no esta registrada en la bd`)
   }
 }
+
+const esColeccionValida=(coleccion,colecciones) => {
+
+  if(!colecciones.includes(coleccion))
+  {
+    throw new Error(`La coleccion ${coleccion} no es permitida. Las colecciones permitidas son: ${colecciones}`)
+  }
+  return true;
+}
+
+
+
+
 
 //Verificar si es un producto valido
 const esProductoValido= async(producto) => {
@@ -78,6 +92,23 @@ const esRolValido=async (rol='')=> {
 }
 
 
+ //Verificar si Id de Mongo existe
+ const idUsuarioExiste= async(id) => {
+  const existeId=await Usuario.findById(id)
+  if (!existeId)
+  {
+  // res.status(400).json({
+  //     msg: `Correo ${correo} ya esta registrado`
+  // })
+  //return;
+      //El express-validator par alanzar un error personalizado usa THROW NEW Error
+      throw new Error(`El _id ${id} de usario no existe existe en la bd`)
+  }
+}
+
+
+
+
 //Verificar si Id de Mongo existe
  const idMongoNoExisteCategoria= async(id) => {
 
@@ -139,8 +170,10 @@ const isValidObjectId= (termino)=>{
     esRolValido,
     correoNoExiste,
     idMongoNoExiste,
+    idUsuarioExiste,
     idMongoNoExisteCategoria,
     correoExiste,
-    isValidObjectId
+    isValidObjectId,
+    esColeccionValida
     
   }
